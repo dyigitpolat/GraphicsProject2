@@ -1,4 +1,6 @@
 <html>
+<LINK REL=StyleSheet HREF="figurestylez.css" TYPE="text/css" MEDIA=screen>
+
 
 
 <script id="vertex-shader" type="x-shader/x-vertex">
@@ -125,6 +127,210 @@ Traslate Z -5.0 <input id="slide" type="range"
   />
  5.0
 </div><br/>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="http://listjs.com/assets/javascripts/list.min.js"></script>
+
+<div id="thetas" class="thetas">
+  <table>
+    <thead>
+      <tr>
+        <th class="sort" data-sort="th1">Th1</th>
+        <th class="sort" data-sort="th2">Th2</th>
+        <th class="sort" data-sort="th3">Th3</th>
+        <th class="sort" data-sort="th4">Th4</th>
+        <th class="sort" data-sort="th5">Th5</th>
+        <th class="sort" data-sort="th6">Th6</th>
+        <th class="sort" data-sort="th7">Th7</th>
+        <th class="sort" data-sort="th8">Th8</th>
+        <th class="sort" data-sort="th9">Th9</th>
+        <th class="sort" data-sort="th10">Th10</th>
+        <th class="sort" data-sort="th11">Th11</th>
+
+      </tr>
+    </thead>
+    <tbody class="list">
+      <tr>
+        <td class="id" style="display:none;">1</td>
+        <td class="th1">5</td>
+        <td class="th2">15</td>
+        <td class="th3">25</td>
+        <td class="th4">35</td>
+        <td class="th5">45</td>
+        <td class="th6">55</td>
+        <td class="th7">65</td>
+        <td class="th8">75</td>
+        <td class="th9">85</td>
+        <td class="th10">95</td>
+        <td class="th11">105</td>
+
+        <td class="edit"><button class="edit-item-btn">Edit</button></td>
+        <td class="remove"><button class="remove-item-btn">Remove</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <table>
+    <td class="th1">
+      <input type="hidden" id="id-field" />
+      <input type="text" id="th1-field" placeholder="Th1" size=3/>
+    </td>
+    <td class="th2">
+      <input type="text" id="th2-field" placeholder="Th2" size=3/>
+    </td>
+    <td class="th3">
+      <input type="text" id="th3-field" placeholder="Th2" size=3/>
+    </td>
+    <td class="th4">
+      <input type="text" id="th4-field" placeholder="Th2" size=3/>
+    </td>
+    <td class="th5">
+      <input type="text" id="th5-field" placeholder="Th2" size=3/>
+    </td>
+    <td class="th6">
+      <input type="text" id="th6-field" placeholder="Th2" size=3/>
+    </td>
+    <td class="th7">
+      <input type="text" id="th7-field" placeholder="Th2" size=3/>
+    </td>
+    <td class="th8">
+      <input type="text" id="th8-field" placeholder="Th2" size=3/>
+    </td>
+    <td class="th9">
+      <input type="text" id="th9-field" placeholder="Th2" size=3/>
+    </td>
+    <td class="th10">
+      <input type="text" id="th10-field" placeholder="Th2" size=3/>
+    </td>
+    <td class="th11">
+      <input type="text" id="th11-field" placeholder="Th2" size=3/>
+    </td>
+    <td class="add">
+      <button id="add-btn">Add</button>
+      <button id="edit-btn">Edit</button>
+    </td>
+  </table>
+
+<script>
+
+var options = {
+  valueNames: [ 'id', 'th1', 'th2', 'th3', 'th4', 'th5', 'th6', 'th7', 'th8', 'th9', 'th10', 'th11' ]
+};
+
+// Init list
+thetaList = new List('thetas', options);
+
+var idField = $('#id-field'),
+    th1Field = $('#th1-field'),
+    th2Field = $('#th2-field'),
+    th3Field = $('#th3-field'),
+    th4Field = $('#th4-field'),
+    th5Field = $('#th5-field'),
+    th6Field = $('#th6-field'),
+    th7Field = $('#th7-field'),
+    th8Field = $('#th8-field'),
+    th9Field = $('#th9-field'),
+    th10Field = $('#th10-field'),
+    th11Field = $('#th11-field'),
+
+    addBtn = $('#add-btn'),
+    editBtn = $('#edit-btn').hide(),
+    removeBtns = $('.remove-item-btn'),
+    editBtns = $('.edit-item-btn');
+
+// Sets callbacks to the buttons in the list
+refreshCallbacks();
+
+addBtn.click(function() {
+  thetaList.add({
+    id: Math.floor(Math.random()*110000),
+    th1: th1Field.val(),
+    th2: th2Field.val(),
+    th3: th3Field.val(),
+    th4: th4Field.val(),
+    th5: th5Field.val(),
+    th6: th6Field.val(),
+    th7: th7Field.val(),
+    th8: th8Field.val(),
+    th9: th9Field.val(),
+    th10: th10Field.val(),
+    th11: th11Field.val()
+  });
+  clearFields();
+  refreshCallbacks();
+});
+
+editBtn.click(function() {
+  var item = thetaList.get('id', idField.val())[0];
+  item.values({
+    id:idField.val(),
+    th1: th1Field.val(),
+    th2: th2Field.val(),
+    th3: th3Field.val(),
+    th4: th4Field.val(),
+    th5: th5Field.val(),
+    th6: th6Field.val(),
+    th7: th7Field.val(),
+    th8: th8Field.val(),
+    th9: th9Field.val(),
+    th10: th10Field.val(),
+    th11: th11Field.val()
+  });
+  clearFields();
+  editBtn.hide();
+  addBtn.show();
+});
+
+function refreshCallbacks() {
+  // Needed to add new buttons to jQuery-extended object
+  removeBtns = $(removeBtns.selector);
+  editBtns = $(editBtns.selector);
+
+  removeBtns.click(function() {
+    var itemId = $(this).closest('tr').find('.id').text();
+    thetaList.remove('id', itemId);
+  });
+
+  editBtns.click(function() {
+    var itemId = $(this).closest('tr').find('.id').text();
+    var itemValues = thetaList.get('id', itemId)[0].values();
+    idField.val(itemValues.id);
+    th1Field.val(itemValues.th1);
+    th2Field.val(itemValues.th2);
+    th3Field.val(itemValues.th3);
+    th4Field.val(itemValues.th4);
+    th5Field.val(itemValues.th5);
+    th6Field.val(itemValues.th6);
+    th7Field.val(itemValues.th7);
+    th8Field.val(itemValues.th8);
+    th9Field.val(itemValues.th9);
+    th10Field.val(itemValues.th10);
+    th11Field.val(itemValues.th11);
+
+    editBtn.show();
+    addBtn.hide();
+  });
+}
+
+function clearFields() {
+  th1Field.val('');
+  th2Field.val('');
+  th3Field.val('');
+  th4Field.val('');
+  th5Field.val('');
+  th6Field.val('');
+  th7Field.val('');
+  th8Field.val('');
+  th9Field.val('');
+  th10Field.val('');
+  th11Field.val('');
+
+}
+
+</script>
+
+
+</div>
 
 
 <body>

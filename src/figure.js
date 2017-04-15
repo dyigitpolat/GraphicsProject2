@@ -58,7 +58,7 @@ var translateX;
 var TranslateZ;
 
 var theta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
-
+var thetaList;
 var numVertices = 24;
 
 var stack = [];
