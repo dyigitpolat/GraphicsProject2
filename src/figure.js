@@ -54,6 +54,9 @@ var numNodes = 10;
 var numAngles = 11;
 var angle = 0;
 
+var translateX;
+var TranslateZ;
+
 var theta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
 
 var numVertices = 24;
@@ -101,7 +104,10 @@ function initNodes(Id) {
 
     case torsoId:
 
-    m = rotate(theta[torsoId], 0, 1, 0 );
+
+    m = translate( 0.0,0.0,TranslateZ);
+    m = mult( m, translate( TranslateX,0.0,0.0));
+    m = mult( m, rotate(theta[torsoId], 0, 1, 0 ));
     figure[torsoId] = createNode( m, torso, null, headId );
     break;
 
@@ -111,8 +117,8 @@ function initNodes(Id) {
 
 
     m = translate(0.0, torsoHeight+0.5*headHeight, 0.0);
-	m = mult(m, rotate(theta[head1Id], 1, 0, 0))
-	m = mult(m, rotate(theta[head2Id], 0, 1, 0));
+	  m = mult(m, rotate(theta[head1Id], 1, 0, 0))
+	  m = mult(m, rotate(theta[head2Id], 0, 1, 0));
     m = mult(m, translate(0.0, -0.5*headHeight, 0.0));
     figure[headId] = createNode( m, head, leftUpperArmId, null);
     break;
@@ -121,28 +127,28 @@ function initNodes(Id) {
     case leftUpperArmId:
 
     m = translate(-(torsoWidth+upperArmWidth), 0.9*torsoHeight, 0.0);
-	m = mult(m, rotate(theta[leftUpperArmId], 1, 0, 0));
+	  m = mult(m, rotate(theta[leftUpperArmId], 1, 0, 0));
     figure[leftUpperArmId] = createNode( m, leftUpperArm, rightUpperArmId, leftLowerArmId );
     break;
 
     case rightUpperArmId:
 
     m = translate(torsoWidth+upperArmWidth, 0.9*torsoHeight, 0.0);
-	m = mult(m, rotate(theta[rightUpperArmId], 1, 0, 0));
+	  m = mult(m, rotate(theta[rightUpperArmId], 1, 0, 0));
     figure[rightUpperArmId] = createNode( m, rightUpperArm, leftUpperLegId, rightLowerArmId );
     break;
 
     case leftUpperLegId:
 
     m = translate(-(torsoWidth+upperLegWidth), 0.1*upperLegHeight, 0.0);
-	m = mult(m , rotate(theta[leftUpperLegId], 1, 0, 0));
+    m = mult(m , rotate(theta[leftUpperLegId], 1, 0, 0));
     figure[leftUpperLegId] = createNode( m, leftUpperLeg, rightUpperLegId, leftLowerLegId );
     break;
 
     case rightUpperLegId:
 
     m = translate(torsoWidth+upperLegWidth, 0.1*upperLegHeight, 0.0);
-	m = mult(m, rotate(theta[rightUpperLegId], 1, 0, 0));
+    m = mult(m, rotate(theta[rightUpperLegId], 1, 0, 0));
     figure[rightUpperLegId] = createNode( m, rightUpperLeg, null, rightLowerLegId );
     break;
 
@@ -308,6 +314,8 @@ window.onload = function init() {
 
     instanceMatrix = mat4();
     timet = 0;
+    TranslateZ = 0;
+    TranslateX = 0;
 
 
     //projectionMatrix = ortho(-10.0,10.0,-10.0, 10.0,-10.0,10.0);
@@ -379,6 +387,16 @@ window.onload = function init() {
     document.getElementById("slider10").onchange = function() {
          theta[head2Id] = event.srcElement.value;
          initNodes(head2Id);
+    };
+
+    document.getElementById("sliderTx").onchange = function() {
+      TranslateX = event.srcElement.value;
+      initNodes(torsoId);
+    };
+    document.getElementById("sliderTz").onchange = function()
+    {
+        TranslateZ = event.srcElement.value;
+        initNodes(torsoId);
     };
 
     for(i=0; i<numNodes; i++) initNodes(i);

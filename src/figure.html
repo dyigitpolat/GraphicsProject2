@@ -16,10 +16,6 @@ void main()
 
     gl_Position = projectionMatrix * modelViewMatrix * vPosition;
     vPos = gl_Position;
-
-    float tempx = gl_Position.x;
-    gl_Position.x = cos(timet / 1.0)*gl_Position.x - sin(timet / 1.0)*gl_Position.y;
-    gl_Position.y = sin(timet / 1.0)*tempx + cos(timet / 1.0)*gl_Position.y;
 }
 </script>
 
@@ -34,7 +30,7 @@ void main()
     gl_FragColor = vec4(0,0,0,1.0);
     gl_FragColor.r = cos( (vPos.z) / 10.0 );
     gl_FragColor.g = cos( (gl_FragCoord.x-timet*20.0) / vPos.z) + sin( gl_FragCoord.y / vPos.z);
-    gl_FragColor.b = abs(cos(timet));
+    gl_FragColor.b = abs(cos(timet*2.0));
 }
 
 </script>
@@ -114,6 +110,20 @@ right lower leg angle -180 <input id="slide" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
+</div><br/>
+
+<div id="sliderTx">
+Traslate X -5.0 <input id="slide" type="range"
+ min="-5" max="5" step="0.1" value="0"
+  />
+ 5.0
+</div><br/>
+
+<div id="sliderTz">
+Traslate Z -5.0 <input id="slide" type="range"
+ min="-5" max="5" step="0.1" value="0"
+  />
+ 5.0
 </div><br/>
 
 
