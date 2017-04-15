@@ -45,89 +45,88 @@ void main()
 <script type="text/javascript" src="figure.js"></script>
 
 <div id="slider0">
-torso angle -180 <input id="slide" type="range"
+torso angle -180 <input id="slider0" name="slider0" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 <div id="slider10">
-head2 angle -180 <input id="slide" type="range"
+head2 angle -180 <input id="slider10" name="slider10" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 
 <div id="slider1">
-head1 angle -180 <input id="slide" type="range"
+head1 angle -180 <input id="slider1" name="slider1" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 
 <div id="slider2">
-left upper arm angle -180 <input id="slide" type="range"
+left upper arm angle -180 <input id="slider2" name="slider2" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 <div id="slider3">
-left lower arm angle -180 <input id="slide" type="range"
+left lower arm angle -180 <input id="slider3" name="slider3" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 <div id="slider4">
-right upper arm angle -180 <input id="slide" type="range"
+right upper arm angle -180 <input id="slider4" name="slider4" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 <div id="slider5">
-right lower arm angle -180 <input id="slide" type="range"
+right lower arm angle -180 <input id="slider5" name="slider5" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 <div id="slider6">
-left upper leg angle -180 <input id="slide" type="range"
+left upper leg angle -180 <input id="slider6" name="slider6" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 <div id="slider7">
-left lower leg angle -180 <input id="slide" type="range"
+left lower leg angle -180 <input id="slider7" name="slider7" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 <div id="slider8">
-right upper leg angle -180 <input id="slide" type="range"
+right upper leg angle -180 <input id="slider8" name="slider8" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 
 <div id="slider9">
-right lower leg angle -180 <input id="slide" type="range"
+right lower leg angle -180 <input id="slider9" name="slider9" type="range"
  min="-180" max="180" step="10" value="0"
   />
  180
 </div><br/>
 
 <div id="sliderTx">
-Traslate X -5.0 <input id="slide" type="range"
+Traslate X -5.0 <input id="sliderTx" name="sliderTx" type="range"
  min="-5" max="5" step="0.1" value="0"
   />
  5.0
 </div><br/>
 
 <div id="sliderTz">
-Traslate Z -5.0 <input id="slide" type="range"
+Traslate Z -5.0 <input id="sliderTz" name="sliderTz" type="range"
  min="-5" max="5" step="0.1" value="0"
   />
  5.0
 </div><br/>
-
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script src="http://listjs.com/assets/javascripts/list.min.js"></script>
@@ -136,6 +135,8 @@ Traslate Z -5.0 <input id="slide" type="range"
   <table>
     <thead>
       <tr>
+        <th class="sort" data-sort="th0">Th0</th>
+        <th class="sort" data-sort="th10">Th10</th>
         <th class="sort" data-sort="th1">Th1</th>
         <th class="sort" data-sort="th2">Th2</th>
         <th class="sort" data-sort="th3">Th3</th>
@@ -145,14 +146,16 @@ Traslate Z -5.0 <input id="slide" type="range"
         <th class="sort" data-sort="th7">Th7</th>
         <th class="sort" data-sort="th8">Th8</th>
         <th class="sort" data-sort="th9">Th9</th>
-        <th class="sort" data-sort="th10">Th10</th>
-        <th class="sort" data-sort="th11">Th11</th>
+        <th class="sort" data-sort="thTx">ThTx</th>
+        <th class="sort" data-sort="thTz">ThTz</th>
 
       </tr>
     </thead>
     <tbody class="list">
       <tr>
         <td class="id" style="display:none;">1</td>
+        <td class="th0">5</td>
+        <td class="th10">95</td>
         <td class="th1">5</td>
         <td class="th2">15</td>
         <td class="th3">25</td>
@@ -162,8 +165,8 @@ Traslate Z -5.0 <input id="slide" type="range"
         <td class="th7">65</td>
         <td class="th8">75</td>
         <td class="th9">85</td>
-        <td class="th10">95</td>
-        <td class="th11">105</td>
+        <td class="thTx">2</td>
+        <td class="thTz">-3</td>
 
         <td class="edit"><button class="edit-item-btn">Edit</button></td>
         <td class="remove"><button class="remove-item-btn">Remove</button></td>
@@ -171,40 +174,6 @@ Traslate Z -5.0 <input id="slide" type="range"
     </tbody>
   </table>
   <table>
-    <td class="th1">
-      <input type="hidden" id="id-field" />
-      <input type="text" id="th1-field" placeholder="Th1" size=3/>
-    </td>
-    <td class="th2">
-      <input type="text" id="th2-field" placeholder="Th2" size=3/>
-    </td>
-    <td class="th3">
-      <input type="text" id="th3-field" placeholder="Th2" size=3/>
-    </td>
-    <td class="th4">
-      <input type="text" id="th4-field" placeholder="Th2" size=3/>
-    </td>
-    <td class="th5">
-      <input type="text" id="th5-field" placeholder="Th2" size=3/>
-    </td>
-    <td class="th6">
-      <input type="text" id="th6-field" placeholder="Th2" size=3/>
-    </td>
-    <td class="th7">
-      <input type="text" id="th7-field" placeholder="Th2" size=3/>
-    </td>
-    <td class="th8">
-      <input type="text" id="th8-field" placeholder="Th2" size=3/>
-    </td>
-    <td class="th9">
-      <input type="text" id="th9-field" placeholder="Th2" size=3/>
-    </td>
-    <td class="th10">
-      <input type="text" id="th10-field" placeholder="Th2" size=3/>
-    </td>
-    <td class="th11">
-      <input type="text" id="th11-field" placeholder="Th2" size=3/>
-    </td>
     <td class="add">
       <button id="add-btn">Add</button>
       <button id="edit-btn">Edit</button>
@@ -214,24 +183,13 @@ Traslate Z -5.0 <input id="slide" type="range"
 <script>
 
 var options = {
-  valueNames: [ 'id', 'th1', 'th2', 'th3', 'th4', 'th5', 'th6', 'th7', 'th8', 'th9', 'th10', 'th11' ]
+  valueNames: [ 'id', 'th0', 'th10', 'th1', 'th2', 'th3', 'th4', 'th5', 'th6', 'th7', 'th8', 'th9', 'thTx', 'thTz' ]
 };
 
 // Init list
 thetaList = new List('thetas', options);
 
 var idField = $('#id-field'),
-    th1Field = $('#th1-field'),
-    th2Field = $('#th2-field'),
-    th3Field = $('#th3-field'),
-    th4Field = $('#th4-field'),
-    th5Field = $('#th5-field'),
-    th6Field = $('#th6-field'),
-    th7Field = $('#th7-field'),
-    th8Field = $('#th8-field'),
-    th9Field = $('#th9-field'),
-    th10Field = $('#th10-field'),
-    th11Field = $('#th11-field'),
 
     addBtn = $('#add-btn'),
     editBtn = $('#edit-btn').hide(),
@@ -244,39 +202,41 @@ refreshCallbacks();
 addBtn.click(function() {
   thetaList.add({
     id: Math.floor(Math.random()*110000),
-    th1: th1Field.val(),
-    th2: th2Field.val(),
-    th3: th3Field.val(),
-    th4: th4Field.val(),
-    th5: th5Field.val(),
-    th6: th6Field.val(),
-    th7: th7Field.val(),
-    th8: th8Field.val(),
-    th9: th9Field.val(),
-    th10: th10Field.val(),
-    th11: th11Field.val()
+    th0: $("#slider0[type=range]").val(),
+    //th0: $("#slider0").val(),
+    th10: $('#slider10[type=range]').val(),
+    th1: $('#slider1[type=range]').val(),
+    th2: $('#slider2[type=range]').val(),
+    th3: $('#slider3[type=range]').val(),
+    th4: $('#slider4[type=range]').val(),
+    th5: $('#slider5[type=range]').val(),
+    th6: $('#slider6[type=range]').val(),
+    th7: $('#slider7[type=range]').val(),
+    th8: $('#slider8[type=range]').val(),
+    th9: $('#slider9[type=range]').val(),
+    thTx: $('#sliderTx[type=range]').val(),
+    thTz: $('#sliderTz[type=range]').val()
   });
-  clearFields();
   refreshCallbacks();
 });
 
 editBtn.click(function() {
   var item = thetaList.get('id', idField.val())[0];
   item.values({
-    id:idField.val(),
-    th1: th1Field.val(),
-    th2: th2Field.val(),
-    th3: th3Field.val(),
-    th4: th4Field.val(),
-    th5: th5Field.val(),
-    th6: th6Field.val(),
-    th7: th7Field.val(),
-    th8: th8Field.val(),
-    th9: th9Field.val(),
-    th10: th10Field.val(),
-    th11: th11Field.val()
+    th0: $('#slider0[type=range]').val(),
+    th10: $('#slider10[type=range]').val(),
+    th1: $('#slider1[type=range]').val(),
+    th2: $('#slider2[type=range]').val(),
+    th3: $('#slider3[type=range]').val(),
+    th4: $('#slider4[type=range]').val(),
+    th5: $('#slider5[type=range]').val(),
+    th6: $('#slider6[type=range]').val(),
+    th7: $('#slider7[type=range]').val(),
+    th8: $('#slider8[type=range]').val(),
+    th9: $('#slider9[type=range]').val(),
+    thTx: $('#sliderTx[type=range]').val(),
+    thTz: $('#sliderTz[type=range]').val()
   });
-  clearFields();
   editBtn.hide();
   addBtn.show();
 });
@@ -295,37 +255,30 @@ function refreshCallbacks() {
     var itemId = $(this).closest('tr').find('.id').text();
     var itemValues = thetaList.get('id', itemId)[0].values();
     idField.val(itemValues.id);
-    th1Field.val(itemValues.th1);
-    th2Field.val(itemValues.th2);
-    th3Field.val(itemValues.th3);
-    th4Field.val(itemValues.th4);
-    th5Field.val(itemValues.th5);
-    th6Field.val(itemValues.th6);
-    th7Field.val(itemValues.th7);
-    th8Field.val(itemValues.th8);
-    th9Field.val(itemValues.th9);
-    th10Field.val(itemValues.th10);
-    th11Field.val(itemValues.th11);
+//$("#slider0").slider( "value", itemValues.th0.val() );
+//$("#slider0").change(function() {
+  //  $("#slider0").slider('value',itemValues.th0.val());
+//});
+$("#slider0[type=range]").val(itemValues.th0);
 
+    $("#slider10[type=range]").val(itemValues.th10);
+    $("#slider1[type=range]").val(itemValues.th1);
+    $("#slider2[type=range]").val(itemValues.th2);
+    $("#slider3[type=range]").val(itemValues.th3);
+    $("#slider4[type=range]").val(itemValues.th4);
+    $("#slider5[type=range]").val(itemValues.th5);
+    $("#slider6[type=range]").val(itemValues.th6);
+    $("#slider7[type=range]").val(itemValues.th7);
+    $("#slider8[type=range]").val(itemValues.th8);
+    $("#slider9[type=range]").val(itemValues.th9);
+
+    $("#sliderTx[type=range]").val(itemValues.thTx);
+    $("#sliderTz[type=range]").val(itemValues.thTz);
     editBtn.show();
     addBtn.hide();
   });
 }
 
-function clearFields() {
-  th1Field.val('');
-  th2Field.val('');
-  th3Field.val('');
-  th4Field.val('');
-  th5Field.val('');
-  th6Field.val('');
-  th7Field.val('');
-  th8Field.val('');
-  th9Field.val('');
-  th10Field.val('');
-  th11Field.val('');
-
-}
 
 </script>
 
