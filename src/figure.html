@@ -29,7 +29,7 @@ void main()
 {
     gl_FragColor = vec4(0,0,0,1.0);
     gl_FragColor.r = cos( (vPos.z) / 10.0 );
-    gl_FragColor.g = cos( (gl_FragCoord.x-timet*20.0) / vPos.z) + sin( gl_FragCoord.y / vPos.z);
+    gl_FragColor.g = cos( (gl_FragCoord.x-timet*20.0) / (-10.0-vPos.z)) + sin( gl_FragCoord.y / (-10.0-vPos.z));
     gl_FragColor.b = abs(cos(timet*2.0));
 }
 
