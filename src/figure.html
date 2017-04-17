@@ -31,7 +31,7 @@ uniform float timet;
 void main()
 {
     gl_FragColor = vec4(0,0,0,1.0);
-    float intensity = 500.0/(vPos.z*vPos.z*vPos.z);
+    float intensity = 1000.0/((vPos.z+3.0)*(vPos.z+3.0)*(vPos.z+3.0));
     gl_FragColor.r = intensity;
     gl_FragColor.g = intensity - 0.2;
     gl_FragColor.b = intensity - 0.4;

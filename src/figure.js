@@ -69,6 +69,8 @@ var theta2 = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
 
 
 var thetaList;
+var transList;
+
 var numVertices = 24;
 
 var stack = [];
@@ -94,6 +96,21 @@ function scale4(a, b, c) {
 
 //--------------------------------------------
 
+function fillLists()
+{
+  thetaList =
+  [
+    [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0],
+    [50, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0]
+  ];
+
+  transList =
+  [
+    [0, 0],
+    [-5, 0]
+  ]
+
+}
 
 function createNode(transform, render, sibling, child){
     var node = {
@@ -115,8 +132,8 @@ function initNodes(Id) {
     case torsoId:
 
 
-    m = translate( 0.0,0.0,TranslateZ);
-    m = mult( m, translate( TranslateX,0.0,0.0));
+    m = translate( 0.0,0.0,curTranslateZ);
+    m = mult( m, translate( curTranslateX,0.0,0.0));
     m = mult( m, rotate(curtheta[torsoId], 0, 1, 0 ));
     figure[torsoId] = createNode( m, torso, null, headId );
     break;
@@ -438,6 +455,7 @@ window.onload = function init() {
     TranslateZ = 0;
     TranslateX = 0;
 
+    fillLists();
 
     //projectionMatrix = ortho(-10.0,10.0,-10.0, 10.0,-10.0,10.0);
     projectionMatrix = perspective( 90, 1, 0.03, 200);
@@ -541,6 +559,7 @@ window.onload = function init() {
 }
 
 
+var interpolationFrame = 0;
 var render = function() {
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
@@ -550,14 +569,22 @@ var render = function() {
     }
     else {
       //next keyframe
+      interpolationFrame = (interpolationFrame + 1) % thetaList.length;
       timet = 0;
     }
 
+    var curFrame = interpolationFrame;
+    var nextFrame = (interpolationFrame + 1) % thetaList.length;
+
     for( var i = 0; i < theta2.length; i++)
     {
-      curtheta[i] = theta[i]*(1-timet) + theta2[i]*timet;
+      curtheta[i] = thetaList[curFrame][i]*(1-timet) + thetaList[nextFrame][i]*timet;
       initNodes(i);
     }
+
+    curTranslateX = transList[curFrame][0]*(1-timet) + transList[nextFrame][0]*timet;
+    curTranslateZ = transList[curFrame][1]*(1-timet) + transList[nextFrame][1]*timet;
+    initNodes(torsoId);
 
     gl.uniform1f(timetLoc, timet);
     traverse(torsoId);
