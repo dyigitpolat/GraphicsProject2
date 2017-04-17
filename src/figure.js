@@ -69,8 +69,8 @@ var TranslateZ2;
 var theta2 = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
 
 
-var thetaList;
-var transList;
+var thetaList = [];
+var transList = [];
 
 var numVertices = 24;
 
@@ -532,6 +532,7 @@ function initEventHandlers(canvas, mousePosition)
 
 var timet;
 var timetLoc;
+var isRunning = false;
 window.onload = function init() {
 
     canvas = document.getElementById( "gl-canvas" );
@@ -556,7 +557,11 @@ window.onload = function init() {
     TranslateZ = 0;
     TranslateX = 0;
 
-    fillLists();
+    //fillLists();
+    //thetaList.push(theta.slice());
+    //thetaList.push(theta.slice());
+    //transList.push( [0,0,0]);
+    //transList.push( [0,0,0]);
 
     //projectionMatrix = ortho(-10.0,10.0,-10.0, 10.0,-10.0,10.0);
     projectionMatrix = perspective( 90, 1, 0.03, 200);
@@ -590,60 +595,85 @@ window.onload = function init() {
     gl.enableVertexAttribArray( vPosition );
 
         document.getElementById("slider0").onchange = function() {
+
+        isRunning = false;
         theta[torsoId ] = event.srcElement.value;
         initNodes(torsoId);
     };
         document.getElementById("slider1").onchange = function() {
+        isRunning = false;
         theta[head1Id] = event.srcElement.value;
         initNodes(head1Id);
     };
 
     document.getElementById("slider2").onchange = function() {
+         isRunning = false;
          theta[leftUpperArmId] = event.srcElement.value;
          initNodes(leftUpperArmId);
     };
     document.getElementById("slider3").onchange = function() {
+
+         isRunning = false;
          theta[leftLowerArmId] =  event.srcElement.value;
          initNodes(leftLowerArmId);
     };
 
         document.getElementById("slider4").onchange = function() {
+        isRunning = false;
         theta[rightUpperArmId] = event.srcElement.value;
         initNodes(rightUpperArmId);
     };
     document.getElementById("slider5").onchange = function() {
+         isRunning = false;
          theta[rightLowerArmId] =  event.srcElement.value;
          initNodes(rightLowerArmId);
     };
         document.getElementById("slider6").onchange = function() {
+        isRunning = false;
         theta[leftUpperLegId] = event.srcElement.value;
         initNodes(leftUpperLegId);
     };
     document.getElementById("slider7").onchange = function() {
+         isRunning = false;
          theta[leftLowerLegId] = event.srcElement.value;
          initNodes(leftLowerLegId);
     };
     document.getElementById("slider8").onchange = function() {
+         isRunning = false;
          theta[rightUpperLegId] =  event.srcElement.value;
          initNodes(rightUpperLegId);
     };
         document.getElementById("slider9").onchange = function() {
+        isRunning = false;
         theta[rightLowerLegId] = event.srcElement.value;
         initNodes(rightLowerLegId);
     };
     document.getElementById("slider10").onchange = function() {
+
+         isRunning = false;
          theta[head2Id] = event.srcElement.value;
          initNodes(head2Id);
     };
 
     document.getElementById("sliderTx").onchange = function() {
+      isRunning = false;
       TranslateX = event.srcElement.value;
       initNodes(torsoId);
     };
     document.getElementById("sliderTz").onchange = function()
     {
+        isRunning = false;
         TranslateZ = event.srcElement.value;
         initNodes(torsoId);
+    };
+
+    document.getElementById("addkeyf").onclick = function()
+    {
+
+        thetaList.push( theta.slice());
+        transList.push( [ TranslateX, 0, TranslateZ]);
+        for(i=0; i<numNodes; i++) initNodes(i);
+        isRunning = true;
     };
 
     for(i=0; i<numNodes; i++) initNodes(i);
@@ -657,28 +687,44 @@ var render = function() {
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 
-    if(timet < 1){
-      timet += 0.01;
-    }
-    else {
-      //next keyframe
-      interpolationFrame = (interpolationFrame + 1) % thetaList.length;
-      timet = 0;
-    }
-
-    var curFrame = interpolationFrame;
-    var nextFrame = (interpolationFrame + 1) % thetaList.length;
-
-    for( var i = 0; i < theta2.length; i++)
+    if( isRunning)
     {
-      curtheta[i] = thetaList[curFrame][i]*(1-timet) + thetaList[nextFrame][i]*timet;
-      initNodes(i);
-    }
+      if(timet < 1){
+        timet += 0.01;
+      }
+      else {
+        //next keyframe
+        interpolationFrame = (interpolationFrame + 1) % thetaList.length;
+        timet = 0;
+      }
 
-    curTranslateX = transList[curFrame][0]*(1-timet) + transList[nextFrame][0]*timet;
-    curTranslateY = transList[curFrame][1]*(1-timet) + transList[nextFrame][1]*timet;
-    curTranslateZ = transList[curFrame][2]*(1-timet) + transList[nextFrame][2]*timet;
-    initNodes(torsoId);
+      var curFrame = interpolationFrame;
+      var nextFrame = (interpolationFrame + 1) % thetaList.length;
+
+      for( var i = 0; i < theta2.length; i++)
+      {
+        curtheta[i] = thetaList[curFrame][i]*(1-timet) + thetaList[nextFrame][i]*timet;
+        initNodes(i);
+      }
+
+      curTranslateX = transList[curFrame][0]*(1-timet) + transList[nextFrame][0]*timet;
+      curTranslateY = transList[curFrame][1]*(1-timet) + transList[nextFrame][1]*timet;
+      curTranslateZ = transList[curFrame][2]*(1-timet) + transList[nextFrame][2]*timet;
+      initNodes(torsoId);
+    }
+    else
+    {
+      for( var i = 0; i < theta2.length; i++)
+      {
+        curtheta[i] = theta[i];
+        initNodes(i);
+      }
+
+      curTranslateX = TranslateX;
+      curTranslateY = 0;
+      curTranslateZ = TranslateZ;
+      initNodes(torsoId);
+    }
 
     gl.uniform1f(timetLoc, timet);
     traverse(torsoId);
