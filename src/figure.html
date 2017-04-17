@@ -30,9 +30,12 @@ uniform float timet;
 void main()
 {
     gl_FragColor = vec4(0,0,0,1.0);
-    gl_FragColor.r = cos( (vPos.z) / 10.0 );
-    gl_FragColor.g = cos( (gl_FragCoord.x-timet*20.0) / vPos.z) + sin( gl_FragCoord.y / vPos.z);
-    gl_FragColor.b = abs(cos(timet*2.0));
+    float intensity = 500.0/(vPos.z*vPos.z*vPos.z);
+    gl_FragColor.r = intensity;
+    gl_FragColor.g = intensity - 0.2;
+    gl_FragColor.b = intensity - 0.4;
+    //gl_FragColor.g = cos( (gl_FragCoord.x-timet*20.0) / vPos.z) /3.0 + sin( gl_FragCoord.y / vPos.z) / 3.0;
+    //gl_FragColor.b = abs(cos(timet*2.0));
 }
 
 </script>
@@ -90,7 +93,7 @@ right lower arm angle -180 <input id="slider5" name="slider5" type="range"
 </div><br/>
 <div id="slider6">
 left upper leg angle -180 <input id="slider6" name="slider6" type="range"
- min="-180" max="180" step="10" value="0"
+ min="-180" max="180" step="10" value="180"
   />
  180
 </div><br/>
@@ -102,7 +105,7 @@ left lower leg angle -180 <input id="slider7" name="slider7" type="range"
 </div><br/>
 <div id="slider8">
 right upper leg angle -180 <input id="slider8" name="slider8" type="range"
- min="-180" max="180" step="10" value="0"
+ min="-180" max="180" step="10" value="180"
   />
  180
 </div><br/>
@@ -133,27 +136,9 @@ Traslate Z -5.0 <input id="sliderTz" name="sliderTz" type="range"
 
 <div id="thetas" class="thetas">
   <table>
-    <thead>
-      <tr>
-        <th class="sort" data-sort="th0">Th0</th>
-        <th class="sort" data-sort="th10">Th10</th>
-        <th class="sort" data-sort="th1">Th1</th>
-        <th class="sort" data-sort="th2">Th2</th>
-        <th class="sort" data-sort="th3">Th3</th>
-        <th class="sort" data-sort="th4">Th4</th>
-        <th class="sort" data-sort="th5">Th5</th>
-        <th class="sort" data-sort="th6">Th6</th>
-        <th class="sort" data-sort="th7">Th7</th>
-        <th class="sort" data-sort="th8">Th8</th>
-        <th class="sort" data-sort="th9">Th9</th>
-        <th class="sort" data-sort="thTx">ThTx</th>
-        <th class="sort" data-sort="thTz">ThTz</th>
-
-      </tr>
-    </thead>
     <tbody class="list">
       <tr>
-        <td class="id" style="display:none;">1</td>
+        <td class="id">1</td>
         <td class="th0">5</td>
         <td class="th10">95</td>
         <td class="th1">5</td>
@@ -287,7 +272,7 @@ $("#slider0[type=range]").val(itemValues.th0);
 
 
 <body>
-<canvas id="gl-canvas" width="512"" height="512"
+<canvas id="gl-canvas" width="512" height="512">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
 </body>

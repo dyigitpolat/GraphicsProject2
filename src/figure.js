@@ -22,6 +22,7 @@ var vertices = [
     vec4( 0.5, -0.5, -0.5, 1.0 )
 ];
 
+var cylinderVertices = [];
 
 var torsoId = 0;
 var headId  = 1;
@@ -54,10 +55,19 @@ var numNodes = 10;
 var numAngles = 11;
 var angle = 0;
 
-var translateX;
-var TranslateZ;
+var curTranslateX;
+var curTranslateZ;
+var curtheta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
 
+var TranslateX;
+var TranslateZ;
 var theta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
+
+var TranslateX2;
+var TranslateZ2;
+var theta2 = [50, 50, 50, 50, 50, 50, 180, 50, 180, 50, 50];
+
+
 var thetaList;
 var numVertices = 24;
 
@@ -107,7 +117,7 @@ function initNodes(Id) {
 
     m = translate( 0.0,0.0,TranslateZ);
     m = mult( m, translate( TranslateX,0.0,0.0));
-    m = mult( m, rotate(theta[torsoId], 0, 1, 0 ));
+    m = mult( m, rotate(curtheta[torsoId], 0, 1, 0 ));
     figure[torsoId] = createNode( m, torso, null, headId );
     break;
 
@@ -117,8 +127,8 @@ function initNodes(Id) {
 
 
     m = translate(0.0, torsoHeight+0.5*headHeight, 0.0);
-	  m = mult(m, rotate(theta[head1Id], 1, 0, 0))
-	  m = mult(m, rotate(theta[head2Id], 0, 1, 0));
+	  m = mult(m, rotate(curtheta[head1Id], 1, 0, 0))
+	  m = mult(m, rotate(curtheta[head2Id], 0, 1, 0));
     m = mult(m, translate(0.0, -0.5*headHeight, 0.0));
     figure[headId] = createNode( m, head, leftUpperArmId, null);
     break;
@@ -127,56 +137,56 @@ function initNodes(Id) {
     case leftUpperArmId:
 
     m = translate(-(torsoWidth+upperArmWidth), 0.9*torsoHeight, 0.0);
-	  m = mult(m, rotate(theta[leftUpperArmId], 1, 0, 0));
+	  m = mult(m, rotate(curtheta[leftUpperArmId], 1, 0, 0));
     figure[leftUpperArmId] = createNode( m, leftUpperArm, rightUpperArmId, leftLowerArmId );
     break;
 
     case rightUpperArmId:
 
     m = translate(torsoWidth+upperArmWidth, 0.9*torsoHeight, 0.0);
-	  m = mult(m, rotate(theta[rightUpperArmId], 1, 0, 0));
+	  m = mult(m, rotate(curtheta[rightUpperArmId], 1, 0, 0));
     figure[rightUpperArmId] = createNode( m, rightUpperArm, leftUpperLegId, rightLowerArmId );
     break;
 
     case leftUpperLegId:
 
     m = translate(-(torsoWidth+upperLegWidth), 0.1*upperLegHeight, 0.0);
-    m = mult(m , rotate(theta[leftUpperLegId], 1, 0, 0));
+    m = mult(m , rotate(curtheta[leftUpperLegId], 1, 0, 0));
     figure[leftUpperLegId] = createNode( m, leftUpperLeg, rightUpperLegId, leftLowerLegId );
     break;
 
     case rightUpperLegId:
 
     m = translate(torsoWidth+upperLegWidth, 0.1*upperLegHeight, 0.0);
-    m = mult(m, rotate(theta[rightUpperLegId], 1, 0, 0));
+    m = mult(m, rotate(curtheta[rightUpperLegId], 1, 0, 0));
     figure[rightUpperLegId] = createNode( m, rightUpperLeg, null, rightLowerLegId );
     break;
 
     case leftLowerArmId:
 
     m = translate(0.0, upperArmHeight, 0.0);
-    m = mult(m, rotate(theta[leftLowerArmId], 1, 0, 0));
+    m = mult(m, rotate(curtheta[leftLowerArmId], 1, 0, 0));
     figure[leftLowerArmId] = createNode( m, leftLowerArm, null, null );
     break;
 
     case rightLowerArmId:
 
     m = translate(0.0, upperArmHeight, 0.0);
-    m = mult(m, rotate(theta[rightLowerArmId], 1, 0, 0));
+    m = mult(m, rotate(curtheta[rightLowerArmId], 1, 0, 0));
     figure[rightLowerArmId] = createNode( m, rightLowerArm, null, null );
     break;
 
     case leftLowerLegId:
 
     m = translate(0.0, upperLegHeight, 0.0);
-    m = mult(m, rotate(theta[leftLowerLegId], 1, 0, 0));
+    m = mult(m, rotate(curtheta[leftLowerLegId], 1, 0, 0));
     figure[leftLowerLegId] = createNode( m, leftLowerLeg, null, null );
     break;
 
     case rightLowerLegId:
 
     m = translate(0.0, upperLegHeight, 0.0);
-    m = mult(m, rotate(theta[rightLowerLegId], 1, 0, 0));
+    m = mult(m, rotate(curtheta[rightLowerLegId], 1, 0, 0));
     figure[rightLowerLegId] = createNode( m, rightLowerLeg, null, null );
     break;
 
@@ -200,7 +210,8 @@ function torso() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5*torsoHeight, 0.0) );
     instanceMatrix = mult(instanceMatrix, scale4( torsoWidth, torsoHeight, torsoWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    drawCylinder();
 }
 
 function head() {
@@ -208,7 +219,8 @@ function head() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * headHeight, 0.0 ));
 	instanceMatrix = mult(instanceMatrix, scale4(headWidth, headHeight, headWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    drawCylinder();
 }
 
 function leftUpperArm() {
@@ -216,7 +228,8 @@ function leftUpperArm() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperArmHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(upperArmWidth, upperArmHeight, upperArmWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    drawCylinder();
 }
 
 function leftLowerArm() {
@@ -224,7 +237,8 @@ function leftLowerArm() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerArmHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(lowerArmWidth, lowerArmHeight, lowerArmWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    drawCylinder();
 }
 
 function rightUpperArm() {
@@ -232,7 +246,8 @@ function rightUpperArm() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperArmHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(upperArmWidth, upperArmHeight, upperArmWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    drawCylinder();
 }
 
 function rightLowerArm() {
@@ -240,7 +255,8 @@ function rightLowerArm() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerArmHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(lowerArmWidth, lowerArmHeight, lowerArmWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    drawCylinder();
 }
 
 function  leftUpperLeg() {
@@ -248,7 +264,8 @@ function  leftUpperLeg() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    drawCylinder();
 }
 
 function leftLowerLeg() {
@@ -256,7 +273,8 @@ function leftLowerLeg() {
     instanceMatrix = mult(modelViewMatrix, translate( 0.0, 0.5 * lowerLegHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(lowerLegWidth, lowerLegHeight, lowerLegWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    drawCylinder();
 }
 
 function rightUpperLeg() {
@@ -264,7 +282,8 @@ function rightUpperLeg() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    drawCylinder();
 }
 
 function rightLowerLeg() {
@@ -272,7 +291,8 @@ function rightLowerLeg() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerLegHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(lowerLegWidth, lowerLegHeight, lowerLegWidth) )
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
+    drawCylinder();
 }
 
 function quad(a, b, c, d) {
@@ -293,6 +313,104 @@ function cube()
     quad( 5, 4, 0, 1 );
 }
 
+
+var circlePoints = 0;
+function bottomCircle()
+{
+  for( var i = 0; i < circlePoints; i++)
+  {
+    pointsArray.push(cylinderVertices[i]);
+  }
+}
+
+function tube()
+{
+  for( var i = 0; i < circlePoints; i++)
+  {
+    pointsArray.push(cylinderVertices[i]);
+    pointsArray.push(cylinderVertices[circlePoints + i]);
+  }
+
+  pointsArray.push(cylinderVertices[0]);
+  pointsArray.push(cylinderVertices[circlePoints]);
+
+}
+
+function topCircle()
+{
+  for( var i = 0; i < circlePoints; i++)
+  {
+    pointsArray.push(cylinderVertices[circlePoints + i]);
+  }
+}
+
+function drawCylinder()
+{
+  gl.drawArrays(gl.TRIANGLE_FAN, 0, circlePoints);
+  gl.drawArrays(gl.TRIANGLE_STRIP, circlePoints, 2*circlePoints + 2);
+  gl.drawArrays(gl.TRIANGLE_FAN, 3*circlePoints + 2, circlePoints);
+}
+
+
+//////////////////////////////////////////
+var mouseP = [0, 0];
+function initEventHandlers(canvas, mousePosition)
+ {
+   var lastX = -1;
+   var lastY = -1;
+   var dragging = false;
+
+   canvas.onmousedown = function(ev) {  //Mouse is pressed
+     var x = ev.clientX;
+     var y = ev.clientY;
+
+     var rect = ev.target.getBoundingClientRect();
+     if(rect.left <= x
+         && x <= rect.right
+         && rect.top <= y
+         && y <= rect.bottom
+       ) {
+       lastX = x;
+       lastY = y;
+       mousePosition[0] = x;
+       mousePosition[1] = canvas.height - y;
+       dragging = true;
+       alert( "mouse at: " + mousePosition[0] + ", " + mousePosition[1])
+     }
+   };
+
+   canvas.onmouseup = function(ev){ //Mouse is released
+     dragging = false;
+   }
+
+   canvas.onmousemove = function(ev) { //Mouse is moved
+     var x = ev.clientX;
+     var y = ev.clientY;
+     if(dragging) {
+       //put some kind of dragging logic in here
+       //Here is a roation example
+       var factor = 100/canvas.height;
+       var dx = factor * (x - lastX);
+       var dy = factor * (y - lastY);
+       //Limit x-axis roation angle to -90 to 90 degrees
+       //currentAngle[0] = Math.max(Math.min(currentAngle[0] + dy, 90), -90);
+       //currentAngle[1] = currentAngle[1] + dx;
+
+       mousePosition[0] = x;
+       mousePosition[1] = canvas.height - y;
+
+     }
+     lastX = x;
+     lastY = y;
+
+   }
+ }
+
+///////////////////////////////////////////
+
+
+
+
 var timet;
 var timetLoc;
 window.onload = function init() {
@@ -302,8 +420,10 @@ window.onload = function init() {
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
+    initEventHandlers( canvas, mouseP );
+
     gl.viewport( 0, 0, canvas.width, canvas.height );
-    gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
+    gl.clearColor( 0.1, 0.0, 0.1, 1.0 );
       gl.enable(gl.DEPTH_TEST);
     //
     //  Load shaders and initialize attribute buffers
@@ -331,7 +451,22 @@ window.onload = function init() {
     projectionMatrixLoc = gl.getUniformLocation(program, "projectionMatrix");
     timetLoc = gl.getUniformLocation(program, "timet");
 
-    cube();
+    //cube();
+    //
+    for( t = 0; t < 2*Math.PI; t += 0.3)
+    {
+      cylinderVertices.push( vec4( 0.5*Math.cos(t), -0.5, 0.5*Math.sin(t), 1.0) );
+      circlePoints++;
+    }
+
+    for( t = 0; t < 2*Math.PI; t += 0.3)
+    {
+      cylinderVertices.push( vec4( 0.5*Math.cos(t), 0.5, 0.5*Math.sin(t), 1.0) );
+    }
+    //
+    bottomCircle();
+    tube();
+    topCircle();
 
     vBuffer = gl.createBuffer();
 
@@ -408,7 +543,21 @@ window.onload = function init() {
 var render = function() {
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
-    timet += 0.01;
+
+    if(timet < 1){
+      timet += 0.01;
+    }
+    else {
+      //next keyframe
+      timet = 0;
+    }
+
+    for( var i = 0; i < theta2.length; i++)
+    {
+      curtheta[i] = theta[i]*(1-timet) + theta2[i]*timet;
+      initNodes(i);
+    }
+
     gl.uniform1f(timetLoc, timet);
     traverse(torsoId);
     requestAnimFrame(render);
