@@ -3,6 +3,7 @@
 
 
 
+
 <script id="vertex-shader" type="x-shader/x-vertex">
 
 precision mediump float;
@@ -55,67 +56,67 @@ torso angle -180 <input id="slider0" name="slider0" type="range"
  180
 </div><br/>
 <div id="slider10">
-head2 angle -180 <input id="slider10" name="slider10" type="range"
- min="-180" max="180" step="10" value="0"
+head2 angle -90 <input id="slider10" name="slider10" type="range"
+ min="-90" max="90" step="10" value="0"
   />
- 180
+ 90
 </div><br/>
 
 <div id="slider1">
-head1 angle -180 <input id="slider1" name="slider1" type="range"
- min="-180" max="180" step="10" value="0"
+head1 angle -60 <input id="slider1" name="slider1" type="range"
+ min="-60" max="60" step="10" value="0"
   />
- 180
+ 60
 </div><br/>
 
 <div id="slider2">
 left upper arm angle -180 <input id="slider2" name="slider2" type="range"
- min="-180" max="180" step="10" value="0"
+ min="-180" max="90" step="10" value="0"
   />
- 180
+ 90
 </div><br/>
 <div id="slider3">
-left lower arm angle -180 <input id="slider3" name="slider3" type="range"
- min="-180" max="180" step="10" value="0"
+left lower arm angle 0 <input id="slider3" name="slider3" type="range"
+ min="0" max="120" step="10" value="0"
   />
- 180
+ 120
 </div><br/>
 <div id="slider4">
 right upper arm angle -180 <input id="slider4" name="slider4" type="range"
- min="-180" max="180" step="10" value="0"
+ min="-180" max="90" step="10" value="0"
   />
- 180
+ 90
 </div><br/>
 <div id="slider5">
-right lower arm angle -180 <input id="slider5" name="slider5" type="range"
- min="-180" max="180" step="10" value="0"
+right lower arm angle 0 <input id="slider5" name="slider5" type="range"
+ min="0" max="120" step="10" value="0"
   />
- 180
+ 120
 </div><br/>
 <div id="slider6">
-left upper leg angle -180 <input id="slider6" name="slider6" type="range"
- min="-180" max="180" step="10" value="180"
+left upper leg angle -120 <input id="slider6" name="slider6" type="range"
+ min="120" max="240" step="10" value="180"
   />
- 180
+ 240
 </div><br/>
 <div id="slider7">
-left lower leg angle -180 <input id="slider7" name="slider7" type="range"
- min="-180" max="180" step="10" value="0"
+left lower leg angle -120 <input id="slider7" name="slider7" type="range"
+ min="-120" max="0" step="10" value="0"
   />
- 180
+ 0
 </div><br/>
 <div id="slider8">
-right upper leg angle -180 <input id="slider8" name="slider8" type="range"
- min="-180" max="180" step="10" value="180"
+right upper leg angle -120 <input id="slider8" name="slider8" type="range"
+ min="120" max="240" step="10" value="180"
   />
- 180
+ 240
 </div><br/>
 
 <div id="slider9">
-right lower leg angle -180 <input id="slider9" name="slider9" type="range"
- min="-180" max="180" step="10" value="0"
+right lower leg angle -120 <input id="slider9" name="slider9" type="range"
+ min="-120" max="0" step="10" value="0"
   />
- 180
+ 0
 </div><br/>
 
 <div id="sliderTx">
@@ -271,10 +272,11 @@ $("#slider0[type=range]").val(itemValues.th0);
 
 </div>
 
-
 <body>
 <canvas id="gl-canvas" width="512" height="512">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
 </body>
+
+
 </html>

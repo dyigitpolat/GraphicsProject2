@@ -65,7 +65,7 @@ var theta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
 
 var TranslateX2;
 var TranslateZ2;
-var theta2 = [50, 50, 50, 50, 50, 50, 180, 50, 180, 50, 50];
+var theta2 = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
 
 
 var thetaList;
@@ -361,8 +361,10 @@ function initEventHandlers(canvas, mousePosition)
    var dragging = false;
 
    canvas.onmousedown = function(ev) {  //Mouse is pressed
-     var x = ev.clientX;
-     var y = ev.clientY;
+     var x = ev.offsetX;
+     var y = ev.offsetY;
+
+     alert( "mouse at: " + x + ", " + y);
 
      var rect = ev.target.getBoundingClientRect();
      if(rect.left <= x
@@ -375,7 +377,6 @@ function initEventHandlers(canvas, mousePosition)
        mousePosition[0] = x;
        mousePosition[1] = canvas.height - y;
        dragging = true;
-       alert( "mouse at: " + mousePosition[0] + ", " + mousePosition[1])
      }
    };
 
@@ -384,8 +385,8 @@ function initEventHandlers(canvas, mousePosition)
    }
 
    canvas.onmousemove = function(ev) { //Mouse is moved
-     var x = ev.clientX;
-     var y = ev.clientY;
+     var x = ev.offsetX;
+     var y = ev.offsetY;
      if(dragging) {
        //put some kind of dragging logic in here
        //Here is a roation example
