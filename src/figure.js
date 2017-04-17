@@ -101,18 +101,18 @@ function fillLists()
 {
   thetaList =
   [
-    [90, 20, 120, -90, 240, -90, 120, 90, 240, 0, 0],
-    [90, 10, 240, -90, 120, -90, 240, 0, 120, 90, 0],
-    [90, 20, 120, -90, 240, -90, 120, 90, 240, 0, 0],
-    [90, 10, 240, -90, 120, -90, 240, 0, 120, 90, 0],
+    [90, 20, 100, -80, 240, -60, 100, 90, 240, 0, 0],
+    [0, 10, 260, -60, 120, -80, 260, 0, 120, 90, 0],
+    [0, 20, 100, -80, 240, -60, 100, 90, 240, 0, 0],
+    [90, 10, 260, -60, 120, -80, 260, 0, 120, 90, 0],
   ];
 
   transList =
   [
-    [-5, 0.5, 0],
-    [-2, 0, 0],
-    [2, 0.5, 0],
-    [5, 0, 0]
+    [0, 0.5, -1],
+    [0, 0, -1],
+    [0, 0.5, -1],
+    [0, 0, -1]
   ]
 
 }
@@ -158,15 +158,17 @@ function initNodes(Id) {
 
     case leftUpperArmId:
 
-    m = translate(-(torsoWidth+upperArmWidth), 0.9*torsoHeight, 0.0);
+    m = translate(-(torsoWidth+upperArmWidth)/2, 0.9*torsoHeight, 0.0);
 	  m = mult(m, rotate(curtheta[leftUpperArmId], 1, 0, 0));
+	  m = mult(m, rotate(15, 0, 0, 1));
     figure[leftUpperArmId] = createNode( m, leftUpperArm, rightUpperArmId, leftLowerArmId );
     break;
 
     case rightUpperArmId:
 
-    m = translate(torsoWidth+upperArmWidth, 0.9*torsoHeight, 0.0);
+    m = translate((torsoWidth+upperArmWidth)/2, 0.9*torsoHeight, 0.0);
 	  m = mult(m, rotate(curtheta[rightUpperArmId], 1, 0, 0));
+	  m = mult(m, rotate(-15, 0, 0, 1));
     figure[rightUpperArmId] = createNode( m, rightUpperArm, leftUpperLegId, rightLowerArmId );
     break;
 
@@ -188,6 +190,7 @@ function initNodes(Id) {
 
     m = translate(0.0, upperArmHeight, 0.0);
     m = mult(m, rotate(curtheta[leftLowerArmId], 1, 0, 0));
+	  m = mult(m, rotate(-15, 0, 0, 1));
     figure[leftLowerArmId] = createNode( m, leftLowerArm, null, null );
     break;
 
@@ -195,6 +198,7 @@ function initNodes(Id) {
 
     m = translate(0.0, upperArmHeight, 0.0);
     m = mult(m, rotate(curtheta[rightLowerArmId], 1, 0, 0));
+	  m = mult(m, rotate(15, 0, 0, 1));
     figure[rightLowerArmId] = createNode( m, rightLowerArm, null, null );
     break;
 
@@ -371,8 +375,100 @@ function drawCylinder()
   gl.drawArrays(gl.TRIANGLE_FAN, 0, circlePoints);
   gl.drawArrays(gl.TRIANGLE_STRIP, circlePoints, 2*circlePoints + 2);
   gl.drawArrays(gl.TRIANGLE_FAN, 3*circlePoints + 2, circlePoints);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 4*circlePoints + 2, capsuleRows*circlePoints);
+  gl.drawArrays(gl.TRIANGLE_STRIP, (4+2*capsuleRows)*circlePoints + 2, capsuleRows*circlePoints);
+
 }
 
+var capsuleRows;
+function createCapsuleTop()
+{
+  var i;
+  var j;
+  capsuleRows = 0;
+  for( i = 0; i < Math.PI / 2; i+= 0.3)
+  {
+    for( j = 0; j < 2*Math.PI; j+= 0.3)
+    {
+      cylinderVertices.push( vec4( 0.5*Math.cos(j)*Math.cos(i), 0.5 + Math.sin(i)*0.1, 0.5*Math.sin(j)*Math.cos(i), 1.0) );
+    }
+    capsuleRows++;
+  }
+
+  cylinderVertices.push( vec4( 0, 1, 0, 1.0) );
+
+}
+
+function createCapsuleBottom()
+{
+  var i;
+  var j;
+  for( i = 0; i < Math.PI / 2; i+= 0.3)
+  {
+    for( j = 0; j < 2*Math.PI; j+= 0.3)
+    {
+      cylinderVertices.push( vec4( 0.5*Math.cos(j)*Math.cos(i), -0.5 - Math.sin(i)*0.1, 0.5*Math.sin(j)*Math.cos(i), 1.0) );
+    }
+  }
+
+  cylinderVertices.push( vec4( 0, -1, 0, 1.0) );
+}
+
+function capsulePoints()
+{
+  var i;
+  var j;
+  var base = 2*circlePoints;
+  for( i = 1; i < capsuleRows; i++)
+  {
+    for( j = 0; j < circlePoints; j++)
+    {
+      pointsArray.push(cylinderVertices[base + i*circlePoints + j]);
+      pointsArray.push(cylinderVertices[base + j]);
+    }
+  }
+
+
+  for( j = 0; j < circlePoints; j++)
+  {
+    pointsArray.push(cylinderVertices[base + j]);
+    pointsArray.push(cylinderVertices[base + capsuleRows*circlePoints]);
+  }
+
+  base = base + capsuleRows*circlePoints + 1;
+
+  for( i = 1; i < capsuleRows; i++)
+  {
+    for( j = 0; j < circlePoints; j++)
+    {
+      pointsArray.push(cylinderVertices[base + i*circlePoints + j]);
+      pointsArray.push(cylinderVertices[base + j]);
+    }
+  }
+
+  for( j = 0; j < circlePoints; j++)
+  {
+    pointsArray.push(cylinderVertices[base + j]);
+    pointsArray.push(cylinderVertices[base + capsuleRows*circlePoints]);
+  }
+
+}
+
+function createCylinder()
+{
+  //
+  for( t = 0; t < 2*Math.PI; t += 0.3)
+  {
+    cylinderVertices.push( vec4( 0.5*Math.cos(t), -0.5, 0.5*Math.sin(t), 1.0) );
+    circlePoints++;
+  }
+
+  for( t = 0; t < 2*Math.PI; t += 0.3)
+  {
+    cylinderVertices.push( vec4( 0.5*Math.cos(t), 0.5, 0.5*Math.sin(t), 1.0) );
+  }
+  //
+}
 
 //////////////////////////////////////////
 var mouseP = [0, 0];
@@ -476,21 +572,13 @@ window.onload = function init() {
     timetLoc = gl.getUniformLocation(program, "timet");
 
     //cube();
-    //
-    for( t = 0; t < 2*Math.PI; t += 0.3)
-    {
-      cylinderVertices.push( vec4( 0.5*Math.cos(t), -0.5, 0.5*Math.sin(t), 1.0) );
-      circlePoints++;
-    }
-
-    for( t = 0; t < 2*Math.PI; t += 0.3)
-    {
-      cylinderVertices.push( vec4( 0.5*Math.cos(t), 0.5, 0.5*Math.sin(t), 1.0) );
-    }
-    //
+    createCylinder();
+    createCapsuleTop();
+    createCapsuleBottom();
     bottomCircle();
     tube();
     topCircle();
+    capsulePoints();
 
     vBuffer = gl.createBuffer();
 
