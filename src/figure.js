@@ -61,6 +61,7 @@ var curTranslateZ;
 var curtheta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
 
 var TranslateX;
+var TranslateY;
 var TranslateZ;
 var theta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
 
@@ -660,6 +661,13 @@ window.onload = function init() {
       TranslateX = event.srcElement.value;
       initNodes(torsoId);
     };
+
+    document.getElementById("sliderTy").onchange = function() {
+      isRunning = false;
+      TranslateY = event.srcElement.value;
+      initNodes(torsoId);
+    };
+
     document.getElementById("sliderTz").onchange = function()
     {
         isRunning = false;
@@ -721,7 +729,7 @@ var render = function() {
       }
 
       curTranslateX = TranslateX;
-      curTranslateY = 0;
+      curTranslateY = TranslateY;
       curTranslateZ = TranslateZ;
       initNodes(torsoId);
     }
