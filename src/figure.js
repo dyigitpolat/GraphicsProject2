@@ -56,6 +56,7 @@ var numAngles = 11;
 var angle = 0;
 
 var curTranslateX;
+var curTranslateY;
 var curTranslateZ;
 var curtheta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
 
@@ -100,14 +101,18 @@ function fillLists()
 {
   thetaList =
   [
-    [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0],
-    [50, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0]
+    [90, 20, 120, -90, 240, -90, 120, 90, 240, 0, 0],
+    [90, 10, 240, -90, 120, -90, 240, 0, 120, 90, 0],
+    [90, 20, 120, -90, 240, -90, 120, 90, 240, 0, 0],
+    [90, 10, 240, -90, 120, -90, 240, 0, 120, 90, 0],
   ];
 
   transList =
   [
-    [0, 0],
-    [-5, 0]
+    [-5, 0.5, 0],
+    [-2, 0, 0],
+    [2, 0.5, 0],
+    [5, 0, 0]
   ]
 
 }
@@ -132,7 +137,7 @@ function initNodes(Id) {
     case torsoId:
 
 
-    m = translate( 0.0,0.0,curTranslateZ);
+    m = translate( curTranslateX, curTranslateY, curTranslateZ);
     m = mult( m, translate( curTranslateX,0.0,0.0));
     m = mult( m, rotate(curtheta[torsoId], 0, 1, 0 ));
     figure[torsoId] = createNode( m, torso, null, headId );
@@ -583,7 +588,8 @@ var render = function() {
     }
 
     curTranslateX = transList[curFrame][0]*(1-timet) + transList[nextFrame][0]*timet;
-    curTranslateZ = transList[curFrame][1]*(1-timet) + transList[nextFrame][1]*timet;
+    curTranslateY = transList[curFrame][1]*(1-timet) + transList[nextFrame][1]*timet;
+    curTranslateZ = transList[curFrame][2]*(1-timet) + transList[nextFrame][2]*timet;
     initNodes(torsoId);
 
     gl.uniform1f(timetLoc, timet);
