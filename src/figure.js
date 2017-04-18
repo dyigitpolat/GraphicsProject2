@@ -288,7 +288,7 @@ function rightLowerArm() {
 
 function  leftUpperLeg() {
 
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0) );
+    instanceMatrix = mult(modelViewMatrix, translate(0.8, 0.5 * upperLegHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
     //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
@@ -297,7 +297,7 @@ function  leftUpperLeg() {
 
 function leftLowerLeg() {
 
-    instanceMatrix = mult(modelViewMatrix, translate( 0.0, 0.5 * lowerLegHeight, 0.0) );
+    instanceMatrix = mult(modelViewMatrix, translate( 0.8, 0.5 * lowerLegHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(lowerLegWidth, lowerLegHeight, lowerLegWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
     //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
@@ -306,7 +306,7 @@ function leftLowerLeg() {
 
 function rightUpperLeg() {
 
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0) );
+    instanceMatrix = mult(modelViewMatrix, translate(-0.8, 0.5 * upperLegHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth) );
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
     //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
@@ -315,7 +315,7 @@ function rightUpperLeg() {
 
 function rightLowerLeg() {
 
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerLegHeight, 0.0) );
+    instanceMatrix = mult(modelViewMatrix, translate(-0.8, 0.5 * lowerLegHeight, 0.0) );
 	instanceMatrix = mult(instanceMatrix, scale4(lowerLegWidth, lowerLegHeight, lowerLegWidth) )
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
     //for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
@@ -387,7 +387,7 @@ function createCapsuleTop()
   var i;
   var j;
   capsuleRows = 0;
-  for( i = 0; i < Math.PI / 2; i+= 0.3)
+  for( i = 0; i < Math.PI; i+= 0.1)
   {
     for( j = 0; j < 2*Math.PI; j+= 0.3)
     {
@@ -404,7 +404,7 @@ function createCapsuleBottom()
 {
   var i;
   var j;
-  for( i = 0; i < Math.PI / 2; i+= 0.3)
+  for( i = 0; i < Math.PI; i+= 0.1)
   {
     for( j = 0; j < 2*Math.PI; j+= 0.3)
     {
