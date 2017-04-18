@@ -598,80 +598,66 @@ window.onload = function init() {
 
         document.getElementById("slider0").onchange = function() {
 
-        isRunning = false;
         theta[torsoId ] = event.srcElement.value;
         initNodes(torsoId);
     };
         document.getElementById("slider1").onchange = function() {
-        isRunning = false;
         theta[head1Id] = event.srcElement.value;
         initNodes(head1Id);
     };
 
     document.getElementById("slider2").onchange = function() {
-         isRunning = false;
          theta[leftUpperArmId] = event.srcElement.value;
          initNodes(leftUpperArmId);
     };
     document.getElementById("slider3").onchange = function() {
 
-         isRunning = false;
          theta[leftLowerArmId] =  event.srcElement.value;
          initNodes(leftLowerArmId);
     };
 
         document.getElementById("slider4").onchange = function() {
-        isRunning = false;
         theta[rightUpperArmId] = event.srcElement.value;
         initNodes(rightUpperArmId);
     };
     document.getElementById("slider5").onchange = function() {
-         isRunning = false;
          theta[rightLowerArmId] =  event.srcElement.value;
          initNodes(rightLowerArmId);
     };
         document.getElementById("slider6").onchange = function() {
-        isRunning = false;
         theta[leftUpperLegId] = event.srcElement.value;
         initNodes(leftUpperLegId);
     };
     document.getElementById("slider7").onchange = function() {
-         isRunning = false;
          theta[leftLowerLegId] = event.srcElement.value;
          initNodes(leftLowerLegId);
     };
     document.getElementById("slider8").onchange = function() {
-         isRunning = false;
          theta[rightUpperLegId] =  event.srcElement.value;
          initNodes(rightUpperLegId);
     };
         document.getElementById("slider9").onchange = function() {
-        isRunning = false;
         theta[rightLowerLegId] = event.srcElement.value;
         initNodes(rightLowerLegId);
     };
     document.getElementById("slider10").onchange = function() {
 
-         isRunning = false;
          theta[head2Id] = event.srcElement.value;
          initNodes(head2Id);
     };
 
     document.getElementById("sliderTx").onchange = function() {
-      isRunning = false;
       TranslateX = event.srcElement.value;
       initNodes(torsoId);
     };
 
     document.getElementById("sliderTy").onchange = function() {
-      isRunning = false;
       TranslateY = event.srcElement.value;
       initNodes(torsoId);
     };
 
     document.getElementById("sliderTz").onchange = function()
     {
-        isRunning = false;
         TranslateZ = event.srcElement.value;
         initNodes(torsoId);
     };
@@ -680,9 +666,16 @@ window.onload = function init() {
     {
 
         thetaList.push( theta.slice());
-        transList.push( [ TranslateX, 0, TranslateZ]);
+        transList.push( [ TranslateX, TranslateY, TranslateZ]);
         for(i=0; i<numNodes; i++) initNodes(i);
-        isRunning = true;
+        alert("keyframe added");
+    };
+
+    document.getElementById("play").onclick = function()
+    {
+        isRunning = !isRunning;
+        timet = 0;
+        interpolationFrame = 0;
     };
 
     for(i=0; i<numNodes; i++) initNodes(i);
