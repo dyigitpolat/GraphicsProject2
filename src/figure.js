@@ -58,12 +58,12 @@ var angle = 0;
 var curTranslateX;
 var curTranslateY;
 var curTranslateZ;
-var curtheta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
+var curtheta = [0, 0, -180, 0, -180, 0, 180, 0, 180, 0, 0];
 
 var TranslateX;
 var TranslateY;
 var TranslateZ;
-var theta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
+var theta = [0, 0, -180, 0, -180, 0, 180, 0, 180, 0, 0];
 
 var TranslateX2;
 var TranslateZ2;
@@ -97,6 +97,90 @@ function scale4(a, b, c) {
 }
 
 //--------------------------------------------
+
+
+function loadList(){
+
+  alert("clicked loadlist");
+
+  thetaList = [];
+  transList = [];
+  // var rawFile = new XMLHttpRequest();
+  // rawFile.open("GET", 'file:///Users/goktangudukbay/Downloads/info.txt', false);
+  // var data = rawFile.responseText;
+  var reader = new FileReader();
+var filePath = '/Users/goktangudukbay/Downloads/info.txt';
+  var data; //placeholder for text output
+  // reader.onload = function (e) {
+  //     data = e.target.result;
+  //   //  displayContents(data);
+  // };//end onload()
+  filePath = new Blob([filePath], {type: 'text/plain'})
+  data = reader.readAsText(filePath);
+
+  alert(data);
+
+  var array = data.toString().split("\n");
+  for(var i = 0; i < thetaList.length; i+=1){
+    array[i] = array[i].toString().split(" ");
+  }
+  for (var i = 0; i < thetaList.length; i += 1){
+    for(var j = 0; j < 11; j += 1){
+      thetalist[i][j] = array[i][j];
+    }
+    for(var j = 0; j < 3; j += 1){
+      thetalist[i][j] = array[i][j];
+    }
+    alert(data);
+
+  }
+
+
+  // $.get('/Users/goktangudukbay/Downloads/info.txt', function(data) {
+  //   alert("helo");
+  //   alert(data.toString());
+  //     var array = data.toString().split("\n");
+  //     for(var i = 0; i < thetaList.length; i+=1){
+  //       array[i] = array[i].toString().split(" ");
+  //     }
+  //     for (var i = 0; i < thetaList.length; i += 1){
+  //       for(var j = 0; j < 11; j += 1){
+  //         thetalist[i][j] = array[i][j];
+  //       }
+  //       for(var j = 0; j < 3; j += 1){
+  //         thetalist[i][j] = array[i][j];
+  //       }
+  //       alert(data);
+  //     }
+  // });
+
+  }
+
+
+
+function saveList(){
+  var content = "";
+  //var fs = require('fs');
+  alert("clicked savelist");
+//transList
+  for (var i = 0; i < thetaList.length; i += 1) {
+    for(var j = 0; j < 11; j += 1){
+      content += thetaList[i][j]+ " ";
+    }
+    for(var j = 0; j < 3; j += 1){
+      content += transList[i][j]+ " ";
+    }
+    content += "\n";
+    alert(content);
+
+  }
+
+  var data = new Blob([content], {type: 'text/plain'});
+  var textFile = window.URL.createObjectURL(data);
+
+  return textFile;
+
+}
 
 function fillLists()
 {
@@ -677,6 +761,19 @@ window.onload = function init() {
         timet = 0;
         interpolationFrame = 0;
     };
+
+    document.getElementById("create").onclick = function(){
+        var link = document.getElementById('downloadlink');
+        alert("clicked link");
+        link.href = saveList();
+        link.style.display = 'block';
+    };
+
+    document.getElementById("load").onclick = function(){
+        alert("clicked link");
+        loadList();
+    };
+
 
     for(i=0; i<numNodes; i++) initNodes(i);
 
