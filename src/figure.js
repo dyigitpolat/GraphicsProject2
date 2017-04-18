@@ -96,68 +96,6 @@ function scale4(a, b, c) {
    return result;
 }
 
-//--------------------------------------------
-
-
-function loadList(){
-
-  alert("clicked loadlist");
-
-  thetaList = [];
-  transList = [];
-  // var rawFile = new XMLHttpRequest();
-  // rawFile.open("GET", 'file:///Users/goktangudukbay/Downloads/info.txt', false);
-  // var data = rawFile.responseText;
-  var reader = new FileReader();
-var filePath = '/Users/goktangudukbay/Downloads/info.txt';
-  var data; //placeholder for text output
-  // reader.onload = function (e) {
-  //     data = e.target.result;
-  //   //  displayContents(data);
-  // };//end onload()
-  filePath = new Blob([filePath], {type: 'text/plain'})
-  data = reader.readAsText(filePath);
-
-  alert(data);
-
-  var array = data.toString().split("\n");
-  for(var i = 0; i < thetaList.length; i+=1){
-    array[i] = array[i].toString().split(" ");
-  }
-  for (var i = 0; i < thetaList.length; i += 1){
-    for(var j = 0; j < 11; j += 1){
-      thetalist[i][j] = array[i][j];
-    }
-    for(var j = 0; j < 3; j += 1){
-      thetalist[i][j] = array[i][j];
-    }
-    alert(data);
-
-  }
-
-
-  // $.get('/Users/goktangudukbay/Downloads/info.txt', function(data) {
-  //   alert("helo");
-  //   alert(data.toString());
-  //     var array = data.toString().split("\n");
-  //     for(var i = 0; i < thetaList.length; i+=1){
-  //       array[i] = array[i].toString().split(" ");
-  //     }
-  //     for (var i = 0; i < thetaList.length; i += 1){
-  //       for(var j = 0; j < 11; j += 1){
-  //         thetalist[i][j] = array[i][j];
-  //       }
-  //       for(var j = 0; j < 3; j += 1){
-  //         thetalist[i][j] = array[i][j];
-  //       }
-  //       alert(data);
-  //     }
-  // });
-
-  }
-
-
-
 function saveList(){
   var content = "";
   //var fs = require('fs');
@@ -788,9 +726,28 @@ window.onload = function init() {
         link.style.display = 'block';
     };
 
-    document.getElementById("load").onclick = function(){
-        alert("clicked link");
-        loadList();
+    document.getElementById("file").onchange = function () {
+        var file = this.files[0];
+
+        var reader = new FileReader();
+        reader.onload = function (progressEvent) {
+            alert("hey");
+            thetaList = [];
+            transList = [];
+            var data = this.result;
+            alert(data.toString());
+
+            var array = data.toString().split("\n");
+            for(var i = 0; i < array.length-1; i+=1){
+              var arraay = array[i].split(" ");
+
+              thetaList.push([arraay[0], arraay[1], arraay[2], arraay[3], arraay[4], arraay[5],
+                arraay[6], arraay[7], arraay[8], arraay[9], arraay[10] ]);
+              transList.push([arraay[11], arraay[12], arraay[13] ]);
+
+            }
+            };
+        reader.readAsText(file);
     };
 
 
