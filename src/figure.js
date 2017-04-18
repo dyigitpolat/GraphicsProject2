@@ -556,6 +556,7 @@ window.onload = function init() {
     instanceMatrix = mat4();
     timet = 0;
     TranslateZ = 0;
+    TranslateY = 0;
     TranslateX = 0;
 
     //fillLists();
